@@ -3,10 +3,11 @@ pipeline {
 
     tools {
         maven 'default-maven'
+        jdk 'jdk21'
     }
 
     environment {
-        DUMMY_APP = 'dummy-0.0.1-SNAPSHOT.jar'
+        DUMMY_APP = 'dummy-0.0.1-SNAPSHOT.jar' // Replace with your artifact name
     }
 
 
@@ -60,7 +61,7 @@ pipeline {
                 // Assuming tests are triggered via npm
                     echo "running tests"
                     // Replace 'your-existing-job-name' with the name of the job you wish to build
-                    def externalJob = build job: 'e2e-tests', wait: true
+                    def externalJob = build job: 'e2e-tests', parameters: [string(name: 'testsBranchName', value: 'main')], wait: true
                     // You can access properties like externalJob.result or externalJob.buildNumber
                     echo "Status: ${externalJob.result}"
                 }
